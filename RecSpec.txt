@@ -1,0 +1,54 @@
+1. Purpose
+    Takes one or multiple calendars and creates a new calendar based on the original
+    may be a simple union of calendars, may apply filters to remove events based on patterns
+    may simply change all titles to "Never Gonna Give You Up"
+    Made for me
+
+2. Scope
+    Ability to change calendars by adding/removing sources and filters
+    Ability to display a calendar
+    display is possible in week, with arrows to change to next or prev week
+    Apply filters to all calendars where a filter is a condition and action
+        condition is a pattern to find ie text matching
+        actions is a set of action where each action is a replacement, insert or removal of text
+    Updates in real-time 
+
+3. Functional Requirements
+    Use simple, clear language, and break down the requirements into specific actions, such as:
+        "The program must allow the user to input data via a form."
+        "The system should validate email addresses."
+        List requirements by priority if needed: Must Have, Should Have, Nice to Have.
+
+4. Non-Functional Requirements
+
+    These are the constraints on how the program should perform:
+        Performance: How fast should it be?
+        Usability: How easy should it be for users to navigate?
+        Security: What data protection standards should be followed?
+        Compatibility: Platforms or environments it must work on.
+
+5. User Interface
+
+    Describe any specific design or UI requirements. For example:
+        "The user interface should be intuitive and allow easy access to all main functions."
+    You can add mockups or describe key elements like menus or buttons.
+
+6. Data Requirements
+
+    Define what data the program will use, store, or manipulate.
+    Specify formats, database requirements, or data processing needs.
+
+7. Acceptance Criteria
+
+    How will you know the program is finished and working as expected?
+    Define success by listing clear tests or outcomes for each requirement:
+        "The system should handle at least 10,000 requests per minute."
+
+8. Dependencies and Risks
+
+    List external factors or systems the program depends on, such as libraries, APIs, or hardware.
+    Identify any risks (e.g., potential delays, technology limitations) and how you will mitigate them.
+
+9. Timeline
+
+    Set deadlines or milestones to track the progress of the project.

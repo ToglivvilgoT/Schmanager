@@ -4,6 +4,15 @@ from abc import ABC, abstractmethod
 from cal import Calendar, Event
 
 
+class Time():
+    def __init__(self, year: int, month: int, day: int, hour: int, minute: int):
+        self.year = year
+        self.month = month
+        self.day = day
+        self.hour = hour
+        self.minute = minute
+
+
 class SrcCal(ABC):
     @abstractmethod
     def get_events() -> Iterable[Event]:

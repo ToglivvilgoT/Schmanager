@@ -1,7 +1,7 @@
 import requests
 
 from cal import Calendar, Event
-from cal_raw import SrcCal
+from cal_raw import SrcCal, Time
 
 
 class SrcCalURL(SrcCal):
@@ -9,19 +9,53 @@ class SrcCalURL(SrcCal):
         self.url = url
         self.cal = None
 
+    @staticmethod
+    def str_to_time(time: str):
+        year = int(time[:4])
+        month = int(time[4:6])
+        day = int(time[6:8])
+        hour = int(time[9:11])
+        minute = int(time[11:13])
+        return Time(year, month, day, hour, minute)
+
     def read_ics(self, file_raw: str):
         file_raw = file_raw.replace('\r\n ', '')
-
-        calendars: list[list[dict[str, str]]] = []
+        calendars: list[Calendar]
+        current_calendar_info: dict|None = None
+        current_calendar_events: list[Event]|None = None
+        current_event_info: dict|None = None
+        started_cal = started_event = False
         
         for line in file_raw.split('\r\n'):
             if not line:
                 continue
 
-            print(line)
             field, content = line.split(':', 1)
-            print(field, content)
 
+            match field, content:
+                case 'BEGIN', 'VCALENDAR':
+                    current_calendar_events = []
+                    current_calendar_info = {}
+                    started_cal = True
+                    break
+                case 'BEGIN', 'VEVENT':
+                    current_event_info = {}
+                    started_event = True
+                    break
+                case 'END', 'VCALENDAR':
+                    calendars.append(Calendar(current_calendar_events))
+                    started_cal = False
+                    break
+                case 'END', 'VEVENT':
+                    current_calendar_events.append(Event(current_event_info))
+                    started_event = False
+                    break
+                case _:
+                    if started_event:
+                        current_event_info[field] = content
+                    elif started_cal:
+                        current_calendar_info[field] = content
+            
     def fetch(self):
         """ loads in all content from the url """
         

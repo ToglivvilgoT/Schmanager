@@ -1,0 +1,21 @@
+add filters
+    add patterns
+        and
+        or
+        not
+        text in field
+        has field
+        in timeframe
+
+    add actions
+        mutiple
+        remove field
+        add field
+        change field
+        add event
+        delete event
+    
+add calendar header info
+add local file input
+add html output
+add tests

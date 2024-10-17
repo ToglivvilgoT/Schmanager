@@ -25,6 +25,42 @@ class Pattern(ABC):
         pass
 
 
+class PatternAnd(Pattern):
+    def __init__(self, patterns: Iterable[Pattern]):
+        self.patterns = [pattern for pattern in patterns]
+
+    def resolve(self, event: Event):
+        return all([pattern.resolve(event) for patten in self.pattens])
+
+
+class PatternOr(Pattern):
+    def __init__(self, patterns: Iterable[Pattern]):
+        self.patterns = [pattern for pattern in patterns]
+
+    def resolve(self, event: Event):
+        return any([pattern.resolve(event) for pattern in self.patterns])
+
+
+class PatternNot(Pattern):
+    def __init__(self, pattern: Pattern):
+        self.pattern = pattern
+
+    def resolve(self, event: Event):
+        return not self.pattern(event)
+
+
+class PatternHasText(Pattern):
+    pass
+
+
+class PatternHasField(Pattern):
+    pass
+
+
+class PatternInTime(Pattern):
+    pass
+
+
 class Action(ABC):
     """ ABC for actions which are applied to events """
     @abstractmethod

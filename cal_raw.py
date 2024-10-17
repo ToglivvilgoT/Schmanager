@@ -15,20 +15,20 @@ class Time():
 
 class SrcCal(ABC):
     @abstractmethod
-    def get_events() -> Iterable[Event]:
+    def get_events(self) -> Iterable[Event]:
         pass
 
 
 class Pattern(ABC):
     @abstractmethod
-    def resolve(event: Event) -> bool:
+    def resolve(self, event: Event) -> bool:
         pass
 
 
 class Action(ABC):
     """ ABC for actions which are applied to events """
     @abstractmethod
-    def resolve(event: Event) -> list[Event]:
+    def resolve(self, event: Event) -> list[Event]:
         pass
 
 
@@ -71,6 +71,8 @@ class UnbuiltCal:
         self.filters = [filtr for filtr in filters]
 
     def build(self):
+        final_events = []
+
         for src_cal in self.src_cals:
             for event in src_cal.get_events():
                 current_events = [event]
@@ -80,3 +82,10 @@ class UnbuiltCal:
                     for current_event in current_events:
                         for next_event in filtr.check(current_event):
                             next_events.append(next_event)
+
+                    current_events = next_events
+                    next_events = []
+
+                final_events += current_events
+
+        return Calendar(final_events)

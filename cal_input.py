@@ -19,8 +19,9 @@ class SrcCalURL(SrcCal):
         return Time(year, month, day, hour, minute)
 
     def read_ics(self, file_raw: str):
+        """ reads an ics file and returns the first VCALENDAR in file with all its VEVENTS in the cal.Calendar format """
         file_raw = file_raw.replace('\r\n ', '')
-        calendars: list[Calendar]
+        calendars: list[Calendar] = []
         current_calendar_info: dict|None = None
         current_calendar_events: list[Event]|None = None
         current_event_info: dict|None = None
@@ -37,27 +38,28 @@ class SrcCalURL(SrcCal):
                     current_calendar_events = []
                     current_calendar_info = {}
                     started_cal = True
-                    break
                 case 'BEGIN', 'VEVENT':
                     current_event_info = {}
                     started_event = True
-                    break
                 case 'END', 'VCALENDAR':
                     calendars.append(Calendar(current_calendar_events))
                     started_cal = False
-                    break
                 case 'END', 'VEVENT':
                     current_calendar_events.append(Event(current_event_info))
                     started_event = False
-                    break
                 case _:
                     if started_event:
                         current_event_info[field] = content
                     elif started_cal:
                         current_calendar_info[field] = content
+
+        try:
+            return calendars[0]
+        except IndexError:
+            raise ValueError('input argument file_raw could not be read or had no VCALENDAR')
             
     def fetch(self):
-        """ loads in all content from the url """
+        """ Fetches the source file, reads in the first VCALENDAR and stores it as a cal.Calendar in self.cal """
         
         try:
             response = requests.get(self.url)
@@ -75,8 +77,12 @@ class SrcCalURL(SrcCal):
 
         self.cal = self.read_ics(file_raw)
 
-    def get_events():
-        pass
+    def get_events(self):
+        """ returns all calendar events, if source calendar hasnt been fetched yet, self.fetch() is called. """
+        if self.cal == None:
+            self.fetch()
+
+        return self.cal.events
 
 
 if __name__ == '__main__':

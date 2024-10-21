@@ -4,22 +4,22 @@ from functools import total_ordering
 
 @total_ordering
 class Time:
-    def __init__(year: int, month: int, day: int, hour: int, minute: int):
+    def __init__(self, year: int, month: int, day: int, hour: int, minute: int):
         self.year = year
         self.month = month
         self.day = day
         self.hour = hour
         self.minute = minute
 
-    def __eq__(self, other: Time):
+    def __eq__(self, other: 'Time'):
         if isinstance(other, Time):
-            return self.year == other.year and
-                self.month == other.month and
-                self.day == other.day and
-                self.hour == other.hour and
+            return self.year == other.year and \
+                self.month == other.month and \
+                self.day == other.day and \
+                self.hour == other.hour and \
                 self.minute == other.minute
 
-    def __lt__(self, other: Time):
+    def __lt__(self, other: 'Time'):
         def helper_comp(first: Sequence[int], second: Sequence[int]):
             if not first:
                 return False
@@ -31,7 +31,7 @@ class Time:
                 [other.year, other.month, other.day, other.hour, other.minute])
         
         else:
-            raise ValueError("can only compare arguments of type Time, not Time and {type(other)}")
+            raise ValueError(f"can only compare arguments of type Time, not Time and {type(other)}")
 
     def str2time(time_str: str):
         """ returns a Time object given a time_str in format: yyyyMMddThhmmssZ where 'T' and 'Z' are string Literals

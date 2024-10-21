@@ -33,6 +33,21 @@ class Time:
         else:
             raise ValueError("can only compare arguments of type Time, not Time and {type(other)}")
 
+    def str2time(time_str: str):
+        """ returns a Time object given a time_str in format: yyyyMMddThhmmssZ where 'T' and 'Z' are string Literals
+        raises ValueError if time_str can not be decoded """
+
+        try:
+            year = int(time_str[0:4])
+            month = int(time_str[4:6])
+            day = int(time_str[6:8])
+            hour = int(time_str[9:11])
+            minute = int(time_str[11:13])
+        except:
+            raise ValueError('time_str could not be interpreted, should be in format yyyyMMddThhmmssZ where "T" and "Z" are string Literals')
+        
+        return Time(year, month, day, hour, minute)
+
 
 class Event:
     """ Class for Calendar Events """

@@ -76,6 +76,8 @@ class Event:
             return Time.str2time(self.content['DTSTART'])
         except KeyError:
             raise ValueError('Event does not have a start time')
+        except ValueError:
+            raise ValueError('Event does not have a start time in correct format, should be in format yyyyMMddThhmmssZ')
 
     def get_end_time(self):
         """ retuns the end time of the Event
@@ -85,6 +87,8 @@ class Event:
             return time.str2time(self.content['DTEND'])
         except KeyError:
             raise ValueError('Event does not have an end time')
+        except ValueError:
+            raise ValueError('Event does not have a start time in correct format, should be in format yyyyMMddThhmmssZ')
 
     def __str__(self, tabs:int=0):
         name = '\t' * tabs + 'Event:\n'

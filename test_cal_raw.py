@@ -1,4 +1,4 @@
-import cal_raw
+import pattern
 import cal
 
 import unittest
@@ -15,29 +15,29 @@ class TestPatternHasText(unittest.TestCase):
 
     def test_one(self):
         """ tests for text in one field """
-        pattern = cal_raw.PatternHasText(self.event_texts[0], [self.event_fields[0]])
-        self.assertTrue(pattern.resolve(self.event))
-        pattern = cal_raw.PatternHasText(self.event_texts[1], [self.event_fields[2]])
-        self.assertFalse(pattern.resolve(self.event))
+        pat = pattern.PatternHasText(self.event_texts[0], [self.event_fields[0]])
+        self.assertTrue(pat.resolve(self.event))
+        pat = pattern.PatternHasText(self.event_texts[1], [self.event_fields[2]])
+        self.assertFalse(pat.resolve(self.event))
 
     def test_multiple(self):
         """ tests for text in two fields """
-        pattern = cal_raw.PatternHasText(self.event_texts[0], [self.event_fields[0], self.event_fields[1]])
-        self.assertTrue(pattern.resolve(self.event))
-        pattern = cal_raw.PatternHasText(self.event_texts[1], [self.event_fields[2], self.event_fields[0]])
-        self.assertFalse(pattern.resolve(self.event))
+        pat = pattern.PatternHasText(self.event_texts[0], [self.event_fields[0], self.event_fields[1]])
+        self.assertTrue(pat.resolve(self.event))
+        pat = pattern.PatternHasText(self.event_texts[1], [self.event_fields[2], self.event_fields[0]])
+        self.assertFalse(pat.resolve(self.event))
 
     def test_all(self):
         """ tests for text in one field """
-        pattern = cal_raw.PatternHasText(self.event_texts[0])
-        self.assertTrue(pattern.resolve(self.event))
-        pattern = cal_raw.PatternHasText('NOT_A_TEXT')
-        self.assertFalse(pattern.resolve(self.event))
+        pat = pattern.PatternHasText(self.event_texts[0])
+        self.assertTrue(pat.resolve(self.event))
+        pat = pattern.PatternHasText('NOT_A_TEXT')
+        self.assertFalse(pat.resolve(self.event))
 
     def test_none(self):
         """ test for text in no field """
-        pattern = cal_raw.PatternHasText(self.event_texts[0], [])
-        self.assertFalse(pattern.resolve(self.event))
+        pat = pattern.PatternHasText(self.event_texts[0], [])
+        self.assertFalse(pat.resolve(self.event))
 
 
 class TestPatternInTime(unittest.TestCase):
@@ -49,15 +49,15 @@ class TestPatternInTime(unittest.TestCase):
 
     def run_test(self, event_start: str, event_end: str, timeframe_start: str, timeframe_end: str, expected_result: bool):
         event = cal.Event({'DTSTART': event_start, 'DTEND': event_end})
-        pattern = cal_raw.PatternInTime(
+        pat = pattern.PatternInTime(
             cal.Time.str2time(timeframe_start),
             cal.Time.str2time(timeframe_end)
         )
 
         if expected_result == True:
-            self.assertTrue(pattern.resolve(event))
+            self.assertTrue(pat.resolve(event))
         else:
-            self.assertFalse(pattern.resolve(event))
+            self.assertFalse(pat.resolve(event))
 
     def test_wholey(self):
         """ tests when event is wholey inside and outside time frame """
@@ -77,18 +77,18 @@ class TestPatternInTime(unittest.TestCase):
 
     def test_invalid(self):
         """ tests when event is missing or has invalid DTSTART and DTEND fields """
-        pattern = cal_raw.PatternInTime(
+        pat = pattern.PatternInTime(
             cal.Time.str2time(self.time1),
             cal.Time.str2time(self.time4)
         )
         event = cal.Event({'DTSTART': self.time2})
-        self.assertFalse(pattern.resolve(event))
+        self.assertFalse(pat.resolve(event))
         event = cal.Event({'DTEND': self.time3})
-        self.assertFalse(pattern.resolve(event))
+        self.assertFalse(pat.resolve(event))
         event = cal.Event({'DTSTART': 'NaN', 'DTEND': self.time3})
-        self.assertFalse(pattern.resolve(event))
+        self.assertFalse(pat.resolve(event))
         event = cal.Event({'DTSTART': self.time2, 'DTEND': 'NaN'})
-        self.assertFalse(pattern.resolve(event))
+        self.assertFalse(pat.resolve(event))
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 from typing import Iterable
 from abc import ABC, abstractmethod
 
-from cal import Calendar, Event
+from cal import Calendar, Event, Time
 
 
 class Time():
@@ -74,12 +74,23 @@ class PatternHasText(Pattern):
         return False
 
 
-class PatternHasField(Pattern):
-    pass
-
-
 class PatternInTime(Pattern):
-    pass
+    """ Pattern for checking if Event is partialy inside a given timeframe """
+    def __init__(self, time_start: Time, time_end: Time):
+        """ time_start chould be earlier than time_end """
+        self.time_start = time_start
+        self.time_end = time_end
+
+    def resolve(self, event: Event):
+        """ checks pattern against event
+        returns true if event is partially inside timeframe, false otherwise
+        returns false if event is missing/has invalid DTSTART or DTEND fields """
+        try:
+            event_start = event.get_start_time()
+            event_end = event.get_end_time()
+            return event_start < self.time_end and event_end > self.time_start
+        except ValueError:
+            return False
 
 
 class Action(ABC):

@@ -50,7 +50,28 @@ class PatternNot(Pattern):
 
 
 class PatternHasText(Pattern):
-    pass
+    """ Pattern for checking if text is in a field (or in all fields) """
+    def __init__(self, text: str, fields: Iterable[str]|None = None):
+        """ text is the text to check for
+        fields are the fields to check in, if None checks in all fields """
+        self.text = text
+        self.fields = fields
+
+    def resolve(self, event: Event):
+        """ checks pattern against event
+        returns True if text is in the field of event
+        returns False otherwise
+        returns False if field is missing from Event """
+        if self.fields == None:
+            fields = event.get_fields()
+        else:
+            fields = self.fields
+
+        for field in event.get_fields():
+            if field in fields and self.text in event.get_field_text(field):
+                return True
+
+        return False
 
 
 class PatternHasField(Pattern):

@@ -28,3 +28,43 @@ class ActionMultiple(Action):
 
             current_events = next_events
             next_events = []
+
+        return current_events
+
+
+class ActionRemoveField(Action):
+    """ Class for removing field from event """
+    def __init__(self, field: str):
+        self.field = field
+
+    def resolve(self, event: Event):
+        event.remove_field(self.field)
+        return [event]
+
+
+class ActionWriteField(Action):
+    """ Class for writing text to a field of event """
+    def __init__(self, field: str, text: str, overwrite: bool = True):
+        self.field = field
+        self.text = text
+        self.overwrite = overwrite
+
+    def resolve(self, event: Event):
+        """ writes text to field as long as overwrite is True or event doesnt have field """
+        event.write_field(self.field, self.text, self.overwrite)
+        return [event]
+
+
+class ActionRemoveEvent(Action):
+    """ Class for removing events """
+    def resolve(self, event: Event):
+        return []
+    
+
+class ActionAddEvent(Action):
+    """ Class for adding new events """
+    def __init__(self, event: Event):
+        self.event_to_add = event
+
+    def resolve(self, event: Event):
+        return [event, self.event_to_add]

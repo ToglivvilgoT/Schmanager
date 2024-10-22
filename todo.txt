@@ -1,14 +1,4 @@
 add filters
-    add patterns
-        in timeframe
-
-    add actions
-        mutiple
-        remove field
-        add field
-        change field
-        add event
-        delete event
     
 add calendar header info
 add local file input

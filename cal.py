@@ -95,6 +95,7 @@ class Event:
         return self.content.keys()
     
     def remove_field(self, field: str):
+        """ removes field from event, if field doesnt exist, nothing happens """
         try:
             del self.content[field]
         except KeyError:

@@ -84,7 +84,7 @@ class Event:
         raises ValueError if Event doesnt have end time """
 
         try:
-            return time.str2time(self.content['DTEND'])
+            return Time.str2time(self.content['DTEND'])
         except KeyError:
             raise ValueError('Event does not have an end time')
         except ValueError:

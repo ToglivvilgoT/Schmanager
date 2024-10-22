@@ -93,6 +93,20 @@ class Event:
     def get_fields(self):
         """ returns all fields of the event """
         return self.content.keys()
+    
+    def remove_field(self, field: str):
+        try:
+            del self.content[field]
+        except KeyError:
+            pass
+
+    def write_field(self, field: str, text: str, overwrite: bool = True):
+        """ writes text to field
+        if event doesnt have field, field is added
+        if event has field and overwrite = True, the previous text is discarded
+        if event has field and overwrite is False, nothing happens """
+        if overwrite or not self.has_field(field):
+            self.content[field] = text
 
     def __str__(self, tabs:int=0):
         name = '\t' * tabs + 'Event:\n'

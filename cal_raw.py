@@ -83,7 +83,8 @@ class PatternInTime(Pattern):
 
     def resolve(self, event: Event):
         """ checks pattern against event
-        returns true if event is partially inside timeframe, false otherwise
+        returns true if event is partially or wholey inside timeframe, false otherwise
+        returns false if event starts/ends at the exact same time as timeframe ends/starts
         returns false if event is missing/has invalid DTSTART or DTEND fields """
         try:
             event_start = event.get_start_time()

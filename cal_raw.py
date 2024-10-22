@@ -30,7 +30,7 @@ class PatternAnd(Pattern):
         self.patterns = [pattern for pattern in patterns]
 
     def resolve(self, event: Event):
-        return all([pattern.resolve(event) for patten in self.pattens])
+        return all([pattern.resolve(event) for pattern in self.pattens])
 
 
 class PatternOr(Pattern):

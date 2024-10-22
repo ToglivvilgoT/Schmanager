@@ -90,6 +90,10 @@ class Event:
         except ValueError:
             raise ValueError('Event does not have a start time in correct format, should be in format yyyyMMddThhmmssZ')
 
+    def get_fields(self):
+        """ returns all fields of the event """
+        return self.content.keys()
+
     def __str__(self, tabs:int=0):
         name = '\t' * tabs + 'Event:\n'
         for field, text in self.content.items():

@@ -75,6 +75,21 @@ class TestPatternInTime(unittest.TestCase):
         self.run_test(self.time1, self.time2, self.time2, self.time3, False)
         self.run_test(self.time2, self.time3, self.time1, self.time2, False)
 
+    def test_invalid(self):
+        """ tests when event is missing or has invalid DTSTART and DTEND fields """
+        pattern = cal_raw.PatternInTime(
+            cal.Time.str2time(self.time1),
+            cal.Time.str2time(self.time4)
+        )
+        event = cal.Event({'DTSTART': self.time2})
+        self.assertFalse(pattern.resolve(event))
+        event = cal.Event({'DTEND': self.time3})
+        self.assertFalse(pattern.resolve(event))
+        event = cal.Event({'DTSTART': 'NaN', 'DTEND': self.time3})
+        self.assertFalse(pattern.resolve(event))
+        event = cal.Event({'DTSTART': self.time2, 'DTEND': 'NaN'})
+        self.assertFalse(pattern.resolve(event))
+
 
 if __name__ == '__main__':
     unittest.main()

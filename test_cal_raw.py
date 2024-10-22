@@ -40,5 +40,41 @@ class TestPatternHasText(unittest.TestCase):
         self.assertFalse(pattern.resolve(self.event))
 
 
+class TestPatternInTime(unittest.TestCase):
+    def setUp(self):
+        self.time1 = '20020202T120000Z'
+        self.time2 = '20030303T130000Z'
+        self.time3 = '20040404T140000Z'
+        self.time4 = '20050505T150000Z'
+
+    def run_test(self, event_start: str, event_end: str, timeframe_start: str, timeframe_end: str, expected_result: bool):
+        event = cal.Event({'DTSTART': event_start, 'DTEND': event_end})
+        pattern = cal_raw.PatternInTime(
+            cal.Time.str2time(timeframe_start),
+            cal.Time.str2time(timeframe_end)
+        )
+
+        if expected_result == True:
+            self.assertTrue(pattern.resolve(event))
+        else:
+            self.assertFalse(pattern.resolve(event))
+
+    def test_wholey(self):
+        """ tests when event is wholey inside and outside time frame """
+        self.run_test(self.time2, self.time3, self.time1, self.time4, True)
+        self.run_test(self.time1, self.time2, self.time3, self.time4, False)
+        self.run_test(self.time3, self.time4, self.time1, self.time2, False)
+
+    def test_partially(self):
+        """ tests when event is partially inside and partially outside time frame """
+        self.run_test(self.time1, self.time3, self.time2, self.time4, True)
+        self.run_test(self.time2, self.time4, self.time1, self.time3, True)
+
+    def test_on_under(self):
+        """ tests when event ends/starts at the same time as the time frame starts/ends """
+        self.run_test(self.time1, self.time2, self.time2, self.time3, False)
+        self.run_test(self.time2, self.time3, self.time1, self.time2, False)
+
+
 if __name__ == '__main__':
     unittest.main()

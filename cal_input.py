@@ -1,7 +1,7 @@
 import requests
 
-from cal import Calendar, Event
-from cal_raw import SrcCal, Time
+from cal import Calendar, Event, Time
+from cal_raw import SrcCal
 
 
 class SrcCalURL(SrcCal):

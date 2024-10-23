@@ -31,7 +31,7 @@ class PatternNot(Pattern):
         self.pattern = pattern
 
     def resolve(self, event: Event):
-        return not self.pattern(event)
+        return not self.pattern.resolve(event)
 
 
 class PatternHasText(Pattern):

@@ -1,20 +1,17 @@
 {
     "src_cals": [
-        {"url": "https://cloud.timeedit.net/liu/web/schema/ri647QQQY80Zn1Q5368009Z8y6Z56.ics"}
+        "url", "https://cloud.timeedit.net/liu/web/schema/ri647QQQY80Zn1Q5368009Z8y6Z56.ics", "/url"
     ],
     "filters": [
         {
-            "pattern": {
-                "not": {
-                    "in_time": [
-                        "20241021T000000Z",
-                        "20241027T000000Z"
-                    ]
-                }
-            },
-            "actions": {
+            "pattern": [
+                "not",
+                "in_time", "20241021T000000Z", "20241027T000000Z",
+                "/not"
+            ],
+            "actions": [
                 "del_event"
-            }
+            ]
         }
     ]
 }

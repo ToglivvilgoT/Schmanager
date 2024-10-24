@@ -5,9 +5,23 @@
     "filters": [
         {
             "pattern": [
+                "or",
+
                 "not",
                 "in_time", "20241021T000000Z", "20241027T000000Z",
-                "/not"
+                "/not",
+
+                "and",
+                "has_text", "TDDE23\\, Undervisningstyp: LA", "SUMMARY",
+                "not", "has_text", "Grupp 8", "SUMMARY",
+                "/and",
+
+                "and",
+                "has_text", "TATA65\\, Undervisningstyp: ME", "SUMMARY",
+                "not", "has_text", "Lärare: Jack Ydehall", "DESCRIPTION",
+                "/and",
+
+                "/or"
             ],
             "actions": [
                 "del_event"

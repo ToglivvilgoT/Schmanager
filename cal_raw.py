@@ -1,28 +1,8 @@
 from typing import Iterable
-from abc import ABC, abstractmethod
 
-from cal import Calendar, Event
-from action import Action
-from pattern import Pattern
-
-
-class SrcCal(ABC):
-    @abstractmethod
-    def get_events(self) -> Iterable[Event]:
-        pass
-
-
-class Filter:
-    """ Class for Event Filters """
-    def __init__(self, pattern: Pattern, action: Action):
-        self.pattern = pattern
-        self.action = action
-
-    def check(self, event: Event):
-        if self.pattern.resolve(event):
-            return self.action.resolve(event)
-        else:
-            return [event]
+from cal import Calendar
+from src_cal import SrcCal
+from filter import Filter
 
 
 class UnbuiltCal:

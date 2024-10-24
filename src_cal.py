@@ -1,7 +1,14 @@
 import requests
+from abc import ABC, abstractmethod
+from typing import Iterable
 
 from cal import Calendar, Event, Time
-from cal_raw import SrcCal
+
+
+class SrcCal(ABC):
+    @abstractmethod
+    def get_events(self) -> Iterable[Event]:
+        pass
 
 
 class SrcCalURL(SrcCal):

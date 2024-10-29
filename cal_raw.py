@@ -30,3 +30,14 @@ class UnbuiltCal:
                 final_events += current_events
 
         return Calendar(final_events)
+    
+    def __str__(self):
+        name = 'Unbuilt Calendar:\n\tSource Calendars:\n'
+        for src_cal in self.src_cals:
+            name += '\t\t' + str(src_cal) + '\n'
+        
+        name += '\tFilters:\n'
+        for filter in self.filters:
+            name += '\t\t' + str(filter) + '\n'
+
+        return name

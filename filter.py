@@ -14,3 +14,6 @@ class Filter:
             return self.action.resolve(event)
         else:
             return [event]
+        
+    def __str__(self):
+        return 'Filter:\n\tPattern: ' + str(self.pattern) + '\n\tAction: ' + str(self.action)

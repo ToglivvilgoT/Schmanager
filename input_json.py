@@ -26,7 +26,7 @@ class InputJSON():
         """ returns the src_cals from data
         data should be a parsed json file """
         src_cals = []
-        src_cals_list = data['src_cals'].split()
+        src_cals_list = data['src_cals']
         i = 0
         while i < len(src_cals_list):
             match src_cals_list[i]:
@@ -74,7 +74,9 @@ class InputJSON():
                     case _:
                         break
 
-            return patrns
+            return patrns, index
+        
+        return parse_recursive(pat, 0)[0][0]
         
     @staticmethod
     def _parse_action(act: list[str]):
@@ -90,7 +92,7 @@ class InputJSON():
                     raise NotImplementedError
                 
         if len(act) == 1:
-            return parse_one(act)
+            return parse_one(act[0])
         else:
             return action.ActionMultiple(*map(parse_one, act))
     
@@ -101,7 +103,7 @@ class InputJSON():
         filters = []
         for fltr in data['filters']:
             pat = cls._parse_pattern(fltr['pattern'])
-            act = cls._parse_action(fltr['action'])
+            act = cls._parse_action(fltr['actions'])
             filters.append(filter.Filter(pat, act))
 
         return filters
@@ -114,6 +116,5 @@ class InputJSON():
         return UnbuiltCal(src_cals, filters)
 
 
-
 if __name__ == '__main__':
-    print(InputJSON('input_24HT1.json').get_unbuilt_cal())
+    print(InputJSON().get_unbuilt_cal('input_24HT1.json').build())

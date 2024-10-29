@@ -90,6 +90,9 @@ class SrcCalURL(SrcCal):
             self.fetch()
 
         return self.cal.events
+    
+    def __str__(self):
+        return str(self.url)
 
 
 if __name__ == '__main__':

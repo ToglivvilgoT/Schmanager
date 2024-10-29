@@ -13,18 +13,18 @@
 
                 "and",
                 "has_text", "TDDE23\\, Undervisningstyp: LA", "SUMMARY",
-                "not", "has_text", "Grupp 8", "SUMMARY",
+                "not", "has_text", "Grupp 8", "SUMMARY", "/not",
                 "/and",
 
                 "and",
                 "has_text", "TATA65\\, Undervisningstyp: ME", "SUMMARY",
-                "not", "has_text", "Lärare: Jack Ydehall", "DESCRIPTION",
+                "not", "has_text", "Lärare: Jack Ydehall", "DESCRIPTION", "/not",
                 "/and",
 
                 "/or"
             ],
             "actions": [
-                "del_event"
+                "remove_event"
             ]
         }
     ]

@@ -4,6 +4,8 @@ from typing import Iterable
 from cal_raw import UnbuiltCal
 import src_cal
 import filter
+import pattern
+import action
 
 
 class InputJSON():
@@ -37,6 +39,13 @@ class InputJSON():
     def _get_filters(cls, data) -> Iterable[filter.Filter]:
         """ returns the filters from data
         data should be a parsed json file """
+        filters = []
+        for fltr in data['filters']:
+            pat = cls.parse_pattern(fltr['pattern'])
+            act = cls.parse_action(fltr['action'])
+            filters.append(filter.Filter(pat, act))
+
+        return filters
 
     @classmethod
     def get_unbuilt_cal(cls, file_name: str) -> UnbuiltCal:

@@ -117,4 +117,6 @@ class InputJSON():
 
 
 if __name__ == '__main__':
-    print(InputJSON().get_unbuilt_cal('input_24HT1.json').build())
+    unbuilt_cal = InputJSON().get_unbuilt_cal('input_24HT2.json')
+    print(unbuilt_cal)
+    print(unbuilt_cal.build())

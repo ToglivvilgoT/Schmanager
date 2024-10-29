@@ -9,6 +9,10 @@ class Pattern(ABC):
     def resolve(self, event: Event) -> bool:
         pass
 
+    @abstractmethod
+    def __str__(self, tabs: int = 0):
+        return 'Pattern Object'
+
 
 class PatternAnd(Pattern):
     def __init__(self, patterns: Iterable[Pattern]):
@@ -16,7 +20,15 @@ class PatternAnd(Pattern):
 
     def resolve(self, event: Event):
         return all([pattern.resolve(event) for pattern in self.patterns])
-
+    
+    def __str__(self, tabs: int = 0):
+        name = tabs * '\t' + 'Pattern And:\n'
+        for pattern in self.patterns:
+            name += pattern.__str__(tabs+1) + '\n'
+        
+        name = name.removesuffix('\n')
+        return name
+    
 
 class PatternOr(Pattern):
     def __init__(self, patterns: Iterable[Pattern]):
@@ -24,6 +36,14 @@ class PatternOr(Pattern):
 
     def resolve(self, event: Event):
         return any([pattern.resolve(event) for pattern in self.patterns])
+    
+    def __str__(self, tabs: int = 0):
+        name = tabs * '\t' + 'Pattern Or:\n'
+        for pattern in self.patterns:
+            name += pattern.__str__(tabs+1) + '\n'
+        
+        name = name.removesuffix('\n')
+        return name
 
 
 class PatternNot(Pattern):
@@ -32,6 +52,9 @@ class PatternNot(Pattern):
 
     def resolve(self, event: Event):
         return not self.pattern.resolve(event)
+    
+    def __str__(self, tabs: int = 0):
+        return tabs * '\t' + 'Pattern Not:\n' + self.pattern.__str__(tabs+1)
 
 
 class PatternHasText(Pattern):
@@ -57,6 +80,12 @@ class PatternHasText(Pattern):
                 return True
 
         return False
+    
+    def __str__(self, tabs: int = 0):
+        name = tabs * '\t' + 'Pattern Has Text:\n'
+        name += tabs * '\t' + '\tText: ' + str(self.text) + '\n'
+        name += tabs * '\t' + '\tFields: ' + str(self.fields)
+        return name
 
 
 class PatternInTime(Pattern):
@@ -77,3 +106,9 @@ class PatternInTime(Pattern):
             return event_start < self.time_end and event_end > self.time_start
         except ValueError:
             return False
+        
+    def __str__(self, tabs: int = 0):
+        name = tabs * '\t' + 'Pattern in Time:\n'
+        name += tabs * '\t' + '\tStart: ' + str(self.time_start) + '\n'
+        name += tabs * '\t' + '\tEnd: ' + str(self.time_end)
+        return name

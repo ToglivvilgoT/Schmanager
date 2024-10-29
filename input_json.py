@@ -75,6 +75,24 @@ class InputJSON():
                         break
 
             return patrns
+        
+    @staticmethod
+    def _parse_action(act: list[str]):
+        def parse_one(act: str) -> action.Action:
+            match act:
+                case 'add_event':
+                    raise NotImplementedError
+                case 'remove_event':
+                    return action.ActionRemoveEvent()
+                case 'remove_field':
+                    return action.ActionRemoveField()
+                case 'write_field':
+                    raise NotImplementedError
+                
+        if len(act) == 1:
+            return parse_one(act)
+        else:
+            return action.ActionMultiple(*map(parse_one, act))
     
     @classmethod
     def _get_filters(cls, data) -> Iterable[filter.Filter]:
@@ -83,7 +101,7 @@ class InputJSON():
         filters = []
         for fltr in data['filters']:
             pat = cls._parse_pattern(fltr['pattern'])
-            act = cls.parse_action(fltr['action'])
+            act = cls._parse_action(fltr['action'])
             filters.append(filter.Filter(pat, act))
 
         return filters

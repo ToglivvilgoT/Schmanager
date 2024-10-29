@@ -2,6 +2,7 @@ import json
 from typing import Iterable
 
 from cal_raw import UnbuiltCal
+import cal
 import src_cal
 import filter
 import pattern
@@ -35,13 +36,53 @@ class InputJSON():
 
         return src_cals
     
+    @staticmethod
+    def _parse_pattern(pat: list[str]) -> pattern.Pattern:
+        """ parses a pattern list of strings and returns the parsed pattern """
+        def parse_recursive(patrn: list[str], index: int) -> tuple[Iterable[pattern.Pattern], int]:
+            """ parses all patterns from index until end of patrn or
+            until '/' indexed keyword without beginning keyword is found 
+            returns parsed patterns and index after last parsed keyword """
+            patrns = []
+            while index < len(patrn):
+                match patrn[index]:
+                    case 'or':
+                        or_patrns, index = parse_recursive(patrn, index + 1)
+                        patrns.append(pattern.PatternOr(or_patrns))
+                        index += 1
+
+                    case 'and':
+                        and_patrns, index = parse_recursive(patrn, index + 1)
+                        patrns.append(pattern.PatternAnd(and_patrns))
+                        index += 1
+
+                    case 'not':
+                        not_patrns, index = parse_recursive(patrn, index + 1)
+                        patrns.append(pattern.PatternNot(not_patrns[0]))
+                        index += 1
+
+                    case 'has_text':
+                        patrns.append(pattern.PatternHasText(*patrn[index+1:index+3]))
+                        index += 3
+
+                    case 'in_time':
+                        patrns.append(pattern.PatternInTime(
+                            *map(cal.Time.str2time, patrn[index+1:index+3])
+                        ))
+                        index += 3
+
+                    case _:
+                        break
+
+            return patrns
+    
     @classmethod
     def _get_filters(cls, data) -> Iterable[filter.Filter]:
         """ returns the filters from data
         data should be a parsed json file """
         filters = []
         for fltr in data['filters']:
-            pat = cls.parse_pattern(fltr['pattern'])
+            pat = cls._parse_pattern(fltr['pattern'])
             act = cls.parse_action(fltr['action'])
             filters.append(filter.Filter(pat, act))
 

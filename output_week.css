@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+}
+
+.schedule {
+    width: 100vw;
+    height: 200vh;
+
+    background-color: beige;
+}
+.week {
+    display: grid;
+    grid-template-columns: 1fr 3fr 3fr 3fr 3fr 3fr 3fr 3fr 1fr;
+    grid-template-rows: 2rem 1fr;
+
+    justify-items: center;
+    align-content: center;
+
+    height: 100%;
+    width: 100%;
+}
+.time-sidebar-left {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+}
+.time {
+    margin: 0;
+    flex-grow: 1;
+}
+.day-header {
+    background-color: aliceblue;
+    margin: 0;
+}
+.event-container {
+    position: relative;
+    width: 100%;
+}
+.event {
+    position: absolute;
+    width: 100%;
+    background-color: blueviolet;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.event-header {
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+
+    font-size: 1.2rem;
+    text-align: center;
+}
+.event-time {
+    margin: 0;
+    text-align: center;
+}
+.event-location {
+    margin: 0;
+    text-align: center;
+}
+.event-description {
+    margin: 0;
+    text-align: center;
+}

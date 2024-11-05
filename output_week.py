@@ -1,8 +1,22 @@
 import cal
+import cal_raw
+import filter
+import pattern
+import action
+import src_cal
 
 
 class OutputWeek:
-    def __init__(self, week_start: cal.Time, week_end: cal.Time, src_cal: cal.Calendar, file_name: str = 'output_week.html'):
+    def __init__(self, week_range: list[cal.Time], calendar: cal.Calendar, file_name: str = 'output_week.html'):
+        self.week_range = week_range
+
+        patrn = pattern.PatternNot(pattern.PatternInTime(week_range[0], week_range[-1]))
+        act = action.ActionRemoveEvent()
+        filtr = filter.Filter(patrn, act)
+        src_calendar = src_cal.SrcCalCalendar(calendar)
+        self.calendar = cal_raw.UnbuiltCal([src_calendar], [filtr]).build()
+        print(src_calendar.get_events())
+
         self.file_name = file_name
 
     def _clear_file(self) -> None:
@@ -101,8 +115,9 @@ class OutputWeek:
         tabs -= 1
         self._write_tag('div', closed=True, tabs=tabs, new_line=True)
 
-    def write_to_file(self) -> None:
-        """ writes out the week of events to the html file """
+    def _write_before_events(self) -> None:
+        """ writes all html that goes before calendar events 
+        returns how many tabs are on the last line """
         self._clear_file()
 
         self._write_header()
@@ -131,6 +146,95 @@ class OutputWeek:
         self._write_time_sidebar(tabs=tabs)
         self._write('', tabs=tabs, new_line=True)
 
+        return tabs
+    
+    def _get_sorted_events(self) -> dict[int, list[cal.Event]]:
+        """ returns a dict with the day as key and all events taking place that day as the value """
+        sorted_events = {time.day: [] for time in self.week_range}
+        for event in self.calendar.events:
+            sorted_events[event.get_start_time().day].append(event)
+
+        return sorted_events            
+
+    def _get_event_offset(self, start_time: cal.Time):
+        return 100 * ((start_time.hour + (start_time.minute / 60)) / 24)
+
+    def _get_event_height(self, start_time: cal.Time, end_time: cal.Time):
+        start = start_time.hour + (start_time.minute / 60)
+        end = end_time.hour + (end_time.minute / 60)
+        return 100 * (start - end)
+    
+    def _write_one_day_events(self, events: list[cal.Event], tabs: int = 0):
+        """ writes out all events taking place during one day """
+        self._write_tag('div', {'class': 'event-container'}, tabs=tabs, new_line=True)
+        tabs += 1
+
+        for event in events:
+            start_time = event.get_start_time()
+            start_time_str = f'{"0" * (start_time.hour < 10)}{start_time.hour}:{"0" * start_time.minute < 10}{start_time.minute}'
+            end_time = event.get_end_time()
+            end_time_str = f'{"0" * (end_time.hour < 10)}{end_time.hour}:{"0" * end_time.minute < 10}{end_time.minute}'
+
+            offset = self._get_event_offset(start_time)
+            height = self._get_event_height(start_time, end_time)
+
+            self._write_tag(
+                'div', 
+                {'class': 'event', 'style': f'top: {offset}%; height: {height}%;'}, 
+                tabs=tabs, 
+                new_line=True
+            )
+            tabs += 1
+
+            try:
+                self._write_open_closed_tag(
+                    'h3', 
+                    {'class': 'event-header'}, 
+                    event.get_field_text('DESCRIPTION'), 
+                    tabs
+                )
+            except KeyError:
+                pass
+            try:
+                self._write_open_closed_tag(
+                    'p', 
+                    {'class': 'event-time'},
+                    f'{start_time_str}-{end_time_str}',
+                    tabs
+                )
+            except:
+                pass
+            try:
+                self._write_open_closed_tag(
+                    'p',
+                    {'class': 'event-location'},
+                    event.get_field_text('LOCATION'),
+                    tabs
+                )
+            except KeyError:
+                pass
+            try:
+                self._write_open_closed_tag(
+                    'p',
+                    {'class': 'event_description'},
+                    event.get_field_text('SUMMARY'),
+                    tabs
+                )
+            except KeyError:
+                pass
+
+            tabs -= 1
+            self._write_tag('div', closed=True, tabs=tabs, new_line=True)
+
+        tabs -= 1
+        self._write_tag('div', closed=True, tabs=tabs, new_line=True)
+    
+    def _write_events(self, tabs: int):
+        sorted_events = self._get_sorted_events()
+        for events in sorted_events.values():
+            self._write_one_day_events(events, tabs)
+    
+    def _write_after_events(self, tabs: int):
         tabs -= 1
         self._write_tag('div', closed=True, tabs=tabs, new_line=True)
 
@@ -139,6 +243,17 @@ class OutputWeek:
 
         tabs -= 1
         self._write_tag('body', closed=True, new_line=True)
+
+        return tabs
+
+
+    def write_to_file(self) -> None:
+        """ writes out the week of events to the html file """
+        tabs = self._write_before_events()
+
+        self._write_events(tabs)
+
+        tabs = self._write_after_events(tabs)
 
         if tabs != 0:
             if tabs > 0:

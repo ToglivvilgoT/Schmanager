@@ -93,6 +93,14 @@ class SrcCalURL(SrcCal):
     
     def __str__(self):
         return str(self.url)
+    
+
+class SrcCalCalendar(SrcCal):
+    def __init__(self, calendar: Calendar):
+        self.calendar = calendar
+
+    def get_events(self):
+        return self.calendar.events
 
 
 if __name__ == '__main__':

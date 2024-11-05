@@ -1,24 +1,21 @@
 import cal
-import src_cal
-import pattern
-import action
-import cal_raw
-import filter
+import input_json
+import output_week
 
 
 if __name__ == '__main__':
-    src_cals = [src_cal.SrcCalURL('https://cloud.timeedit.net/liu/web/schema/ri647QQQY80Zn1Q5368009Z8y6Z56.ics')]
-    filters = [
-        filter.Filter(
-            pattern.PatternNot(
-                pattern.PatternInTime(
-                    cal.Time(2024, 10, 21, 0, 0),
-                    cal.Time(2024, 10, 28, 0, 0),
-                )
-            ),
-            action.ActionRemoveEvent()
-        )
-    ]
-    unbuilt_calendar = cal_raw.UnbuiltCal(src_cals, filters)
+    unbuilt_calendar = input_json.InputJSON().get_unbuilt_cal('input_24HT2.json')
     calendar = unbuilt_calendar.build()
-    print(calendar)
+    output_week.OutputWeek(
+        [
+            cal.Time(2024, 11, 11, 0, 0),
+            cal.Time(2024, 11, 12, 0, 0),
+            cal.Time(2024, 11, 13, 0, 0),
+            cal.Time(2024, 11, 14, 0, 0),
+            cal.Time(2024, 11, 15, 0, 0),
+            cal.Time(2024, 11, 16, 0, 0),
+            cal.Time(2024, 11, 17, 0, 0),
+        ],
+        calendar,
+        'output_week.html'     
+    ).write_to_file()

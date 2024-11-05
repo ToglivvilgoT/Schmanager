@@ -87,6 +87,20 @@ class OutputWeek:
         for content in contents:
             self._write_open_closed_tag('h2', properties, content, tabs)
 
+    def _write_time_sidebar(
+            self,
+            container_properties = {'class': 'time-sidebar-left'},
+            time_properties = {'class': 'time'},
+            hour_range = (0, 24),
+            tabs: int = 0,
+    ) -> None:
+        self._write_tag('div', container_properties, tabs=tabs, new_line=True)
+        tabs += 1
+        for hour in range(*hour_range):
+            self._write_open_closed_tag('p', time_properties, f'{"0" * (hour < 10)}{hour}:00', tabs)
+        tabs -= 1
+        self._write_tag('div', closed=True, tabs=tabs, new_line=True)
+
     def write_to_file(self) -> None:
         """ writes out the week of events to the html file """
         self._clear_file()
@@ -105,11 +119,16 @@ class OutputWeek:
         self._write_tag('div', {'class': 'week'}, tabs=tabs, new_line=True)
         tabs += 1
         
+        # write day headers
         self._write_open_closed_tag('div', tabs=tabs)
         self._write('', tabs=tabs, new_line=True)
         self._write_day_headers(tabs=tabs)
         self._write('', tabs=tabs, new_line=True)
         self._write_open_closed_tag('div', tabs=tabs)
+        self._write('', tabs=tabs, new_line=True)
+
+        # write left timebar
+        self._write_time_sidebar(tabs=tabs)
         self._write('', tabs=tabs, new_line=True)
 
         tabs -= 1

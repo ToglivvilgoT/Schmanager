@@ -80,21 +80,37 @@ class InputJSON():
         
     @staticmethod
     def _parse_action(act: list[str]):
-        def parse_one(act: str) -> action.Action:
-            match act:
-                case 'add_event':
-                    raise NotImplementedError
-                case 'remove_event':
-                    return action.ActionRemoveEvent()
-                case 'remove_field':
-                    return action.ActionRemoveField()
-                case 'write_field':
-                    raise NotImplementedError
+        """ returns the parsed act """
+        def parse_recursive(acts: list[str], index: int) -> tuple[list[action.Action], int]:
+            """ returns a list of all parsed actions in act from index 
+            to end of act or until not opened closed tag 
+            also returns the index after the last parsed action """
+            actions = []
+            while index < len(acts):
+                match acts[index]:
+                    case 'add_event':
+                        actions.append(action.ActionAddEvent(cal.Event(acts[index+1])))
+                        index += 2
+                    case 'remove_event':
+                        actions.append(action.ActionRemoveEvent())
+                        index += 1
+                    case 'remove_field':
+                        actions.append(action.ActionRemoveField(acts[index+1]))
+                        index += 2
+                    case 'write_field':
+                        actions.append(action.ActionWriteField(acts[index+1], acts[index+2]))
+                        index += 3
+                    case 'multiple':
+                        new_acts, index = parse_recursive(acts, index+1)
+                        actions.append(action.ActionMultiple(new_acts))
+                    case '/multiple':
+                        return actions, index + 1
+                    
+            return actions, index
+        
+        return parse_recursive(act, 0)[0][0]
                 
-        if len(act) == 1:
-            return parse_one(act[0])
-        else:
-            return action.ActionMultiple(*map(parse_one, act))
+        
     
     @classmethod
     def _get_filters(cls, data) -> Iterable[filter.Filter]:
@@ -103,7 +119,7 @@ class InputJSON():
         filters = []
         for fltr in data['filters']:
             pat = cls._parse_pattern(fltr['pattern'])
-            act = cls._parse_action(fltr['actions'])
+            act = cls._parse_action(fltr['action'])
             filters.append(filter.Filter(pat, act))
 
         return filters

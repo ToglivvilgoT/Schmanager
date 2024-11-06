@@ -15,5 +15,8 @@ class Filter:
         else:
             return [event]
         
-    def __str__(self):
-        return 'Filter:\n\tPattern: ' + str(self.pattern) + '\n\tAction: ' + str(self.action)
+    def __str__(self, tabs: int = 0):
+        name = '\t' * tabs + 'Filter:\n'
+        name += '\t' * (tabs+1) + 'Pattern:\n' + self.pattern.__str__(tabs+2) + '\n'
+        name += '\t' * (tabs+1) + 'Action:\n' + self.action.__str__(tabs+2)
+        return name

@@ -11,6 +11,9 @@ class Action(ABC):
     def resolve(self, event: Event) -> list[Event]:
         pass
 
+    def __str__(self, tabs: int = 0):
+        return '\t' * tabs + 'Baseclass Action Object'
+
 
 class ActionMultiple(Action):
     """ Class for handling multiple actions in sequence """
@@ -30,6 +33,13 @@ class ActionMultiple(Action):
             next_events = []
 
         return current_events
+    
+    def __str__(self, tabs: int = 0):
+        name = '\t' * tabs + 'Action Multiple:\n'
+        for act in self.actions:
+            name += act.__str__(tabs+1) + '\n'
+
+        return name.rstrip()
 
 
 class ActionRemoveField(Action):
@@ -40,6 +50,9 @@ class ActionRemoveField(Action):
     def resolve(self, event: Event):
         event.remove_field(self.field)
         return [event]
+    
+    def __str__(self, tabs: int = 0):
+        return '\t' * tabs + f'Action Remove Field: {self.field}'
 
 
 class ActionWriteField(Action):
@@ -53,12 +66,23 @@ class ActionWriteField(Action):
         """ writes text to field as long as overwrite is True or event doesnt have field """
         event.write_field(self.field, self.text, self.overwrite)
         return [event]
+    
+    def __str__(self, tabs: int = 0):
+        name = '\t' * tabs + 'Action Write Field:\n'
+        name += '\t' * (tabs+1) + f'Field: {self.field}\n'
+        name += '\t' * (tabs+1) + f'Text: {self.text}\n'
+        name += '\t' * (tabs+1) + f'Overwrite: {self.overwrite}\n'
+        return name.rstrip()
+
 
 
 class ActionRemoveEvent(Action):
     """ Class for removing events """
     def resolve(self, event: Event):
         return []
+    
+    def __str__(self, tabs: int = 0):
+        return '\t' * tabs + 'Action Remove Event'
     
 
 class ActionAddEvent(Action):
@@ -68,3 +92,6 @@ class ActionAddEvent(Action):
 
     def resolve(self, event: Event):
         return [event, self.event_to_add]
+    
+    def __str__(self, tabs: int = 0):
+        return '\t' * tabs + 'Action Add Event:\n' + self.event_to_add.__str__(tabs+1)

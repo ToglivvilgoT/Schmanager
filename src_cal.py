@@ -10,6 +10,9 @@ class SrcCal(ABC):
     def get_events(self) -> Iterable[Event]:
         pass
 
+    def __str__(self, tabs: int = 0):
+        return '\t' * (tabs) + 'Baseclass SrcCal Object'
+
 
 class SrcCalURL(SrcCal):
     def __init__(self, url: str):
@@ -91,8 +94,8 @@ class SrcCalURL(SrcCal):
 
         return self.cal.events
     
-    def __str__(self):
-        return str(self.url)
+    def __str__(self, tabs: int = 0):
+        return '\t' * tabs + 'SrcCalURL with URL: ' + str(self.url)
     
 
 class SrcCalCalendar(SrcCal):
@@ -101,6 +104,9 @@ class SrcCalCalendar(SrcCal):
 
     def get_events(self):
         return self.calendar.events
+    
+    def __str__(self, tabs: int = 0):
+        return '\t' * tabs + 'SrcCalCalendar Object:\n' + self.calendar.__str__(tabs+1)
 
 
 if __name__ == '__main__':

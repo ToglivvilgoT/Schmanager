@@ -31,13 +31,15 @@ class UnbuiltCal:
 
         return Calendar(final_events)
     
-    def __str__(self):
-        name = 'Unbuilt Calendar:\n\tSource Calendars:\n'
-        for src_cal in self.src_cals:
-            name += '\t\t' + str(src_cal) + '\n'
+    def __str__(self, tabs: int = 0):
+        name = '\t' * tabs + 'Unbuilt Calendar:\n'
         
-        name += '\tFilters:\n'
+        name += '\t' * (tabs+1) + 'Source Calendars:\n'
+        for src_cal in self.src_cals:
+            name += src_cal.__str__(tabs+2) + '\n'
+        
+        name += '\t' * (tabs+1) + 'Filters:\n'
         for filter in self.filters:
-            name += '\t\t' + str(filter) + '\n'
+            name += filter.__str__(tabs+2) + '\n'
 
         return name

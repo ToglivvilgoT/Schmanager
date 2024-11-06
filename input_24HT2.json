@@ -21,7 +21,7 @@
             "action": [
                 "multiple",
                 "write_field", "SUMMARY", "TDDE25 Labb SG4",
-                "write_field", "DESCRIPTIOM", "Featuring Erik Avedal Holmsten",
+                "write_field", "DESCRIPTION", "Featuring Erik Avedal Holmsten",
                 "/multiple"
             ]
         },

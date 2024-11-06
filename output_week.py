@@ -15,7 +15,6 @@ class OutputWeek:
         filtr = filter.Filter(patrn, act)
         src_calendar = src_cal.SrcCalCalendar(calendar)
         self.calendar = cal_raw.UnbuiltCal([src_calendar], [filtr]).build()
-        print(src_calendar.get_events())
 
         self.file_name = file_name
 
@@ -162,7 +161,7 @@ class OutputWeek:
     def _get_event_height(self, start_time: cal.Time, end_time: cal.Time):
         start = start_time.hour + (start_time.minute / 60)
         end = end_time.hour + (end_time.minute / 60)
-        return 100 * (start - end)
+        return 100 * ((end - start) / 24)
     
     def _write_one_day_events(self, events: list[cal.Event], tabs: int = 0):
         """ writes out all events taking place during one day """
@@ -171,9 +170,9 @@ class OutputWeek:
 
         for event in events:
             start_time = event.get_start_time()
-            start_time_str = f'{"0" * (start_time.hour < 10)}{start_time.hour}:{"0" * start_time.minute < 10}{start_time.minute}'
+            start_time_str = f'{"0" * (start_time.hour < 10)}{start_time.hour}:{"0" * (start_time.minute < 10)}{start_time.minute}'
             end_time = event.get_end_time()
-            end_time_str = f'{"0" * (end_time.hour < 10)}{end_time.hour}:{"0" * end_time.minute < 10}{end_time.minute}'
+            end_time_str = f'{"0" * (end_time.hour < 10)}{end_time.hour}:{"0" * (end_time.minute < 10)}{end_time.minute}'
 
             offset = self._get_event_offset(start_time)
             height = self._get_event_height(start_time, end_time)
@@ -190,7 +189,7 @@ class OutputWeek:
                 self._write_open_closed_tag(
                     'h3', 
                     {'class': 'event-header'}, 
-                    event.get_field_text('DESCRIPTION'), 
+                    event.get_field_text('SUMMARY'), 
                     tabs
                 )
             except KeyError:
@@ -216,8 +215,8 @@ class OutputWeek:
             try:
                 self._write_open_closed_tag(
                     'p',
-                    {'class': 'event_description'},
-                    event.get_field_text('SUMMARY'),
+                    {'class': 'event-description'},
+                    event.get_field_text('DESCRIPTION'),
                     tabs
                 )
             except KeyError:

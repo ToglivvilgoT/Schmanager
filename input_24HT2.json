@@ -5,23 +5,18 @@
     "filters": [
         {
             "pattern": [
-                "or",
-
-                "not",
-                "in_time", "20241104T000000Z", "20241111T000000Z",
-                "/not",
-
                 "and",
-                "has_text", "TDDE23\\, Undervisningstyp: LA", "SUMMARY",
-                "not", "has_text", "Grupp 8", "SUMMARY", "/not",
-                "/and",
-
-                "and",
-                "has_text", "TATA65\\, Undervisningstyp: ME", "SUMMARY",
-                "not", "has_text", "Lärare: Jack Ydehall", "DESCRIPTION", "/not",
-                "/and",
-
-                "/or"
+                "has_text", "TDDE25\\, Undervisningstyp: LA", "SUMMARY",
+                "not", "has_text", "Storgrupp 4", "SUMMARY", "/not",
+                "/and"
+            ],
+            "actions": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text", "TDDE24\\, Undervisningstyp: PROGR\\, D1\\, U1", "SUMMARY"
             ],
             "actions": [
                 "remove_event"

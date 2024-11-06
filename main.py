@@ -8,13 +8,13 @@ if __name__ == '__main__':
     calendar = unbuilt_calendar.build()
     output_week.OutputWeek(
         [
-            cal.Time(2024, 11, 11, 0, 0),
-            cal.Time(2024, 11, 12, 0, 0),
-            cal.Time(2024, 11, 13, 0, 0),
-            cal.Time(2024, 11, 14, 0, 0),
-            cal.Time(2024, 11, 15, 0, 0),
-            cal.Time(2024, 11, 16, 0, 0),
-            cal.Time(2024, 11, 17, 0, 0),
+            cal.Time(2024, 11, 4, 0, 0),
+            cal.Time(2024, 11, 5, 0, 0),
+            cal.Time(2024, 11, 6, 0, 0),
+            cal.Time(2024, 11, 7, 0, 0),
+            cal.Time(2024, 11, 8, 0, 0),
+            cal.Time(2024, 11, 9, 0, 0),
+            cal.Time(2024, 11, 10, 0, 0),
         ],
         calendar,
         'output_week.html'     

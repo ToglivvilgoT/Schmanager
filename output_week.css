@@ -18,6 +18,8 @@ body {
 
     height: 100%;
     width: 100%;
+
+    gap: 1px;
 }
 .time-sidebar-left {
     display: flex;
@@ -31,7 +33,7 @@ body {
 }
 .day-header {
     background-color: aliceblue;
-    margin: 0;
+    margin: 0   ;
 }
 .event-container {
     position: relative;
@@ -44,14 +46,19 @@ body {
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+
+    overflow: hidden;
+
+    padding: 0.5rem;
+    box-sizing: border-box;
+
+    border-radius: 0.5rem;
 }
 .event-header {
     margin: 0;
     width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
 
     font-size: 1.2rem;
     text-align: center;

@@ -6,6 +6,59 @@
         {
             "pattern": [
                 "and",
+                "has_text", "TDDE24\\, Undervisningstyp: SE", "SUMMARY",
+                "not", "has_text", "Grupp S1", "SUMMARY", "/not",
+                "/and"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text", "TDDE24\\, Undervisningstyp: SE", "SUMMARY"
+            ],
+            "action": [
+                "multiple",
+                "write_field", "SUMMARY", "TDDE24 Seminarium",
+                "write_field", "DESCRIPTION", "Featuring MORGAN!",
+                "/multiple"
+            ]
+        },
+        {
+            "pattern": [
+                "and",
+                "has_text", "TDDE24\\, Undervisningstyp: LA", "SUMMARY",
+                "not", "has_text", "Grupp 63", "SUMMARY", "/not",
+                "/and"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text", "TDDE24\\, Undervisningstyp: LA", "SUMMARY"
+            ],
+            "action": [
+                "multiple",
+                "write_field", "SUMMARY", "TDDE24 Labb",
+                "write_field", "DESCRIPTION", "Featuring ALICE!",
+                "/multiple"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text", "TDDE24\\, Undervisningstyp: PROGR\\, D1\\, U1", "SUMMARY"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+
+        {
+            "pattern": [
+                "and",
                 "has_text", "TDDE25\\, Undervisningstyp: LA", "SUMMARY",
                 "not", "has_text", "Storgrupp 4", "SUMMARY", "/not",
                 "/and"
@@ -20,7 +73,29 @@
             ],
             "action": [
                 "multiple",
-                "write_field", "SUMMARY", "TDDE25 Labb SG4",
+                "write_field", "SUMMARY", "TDDE25 Labb",
+                "write_field", "DESCRIPTION", "Featuring Erik Avedal Holmsten",
+                "/multiple"
+            ]
+        },
+        {
+            "pattern": [
+                "and",
+                "has_text", "TDDE25\\, Undervisningstyp: RE", "SUMMARY",
+                "not", "has_text", "Storgrupp 4", "SUMMARY",
+                "/and"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text", "TDDE25\\, Undervisningstyp: RE", "SUMMARY"
+            ],
+            "action": [
+                "multiple",
+                "write_field", "SUMMARY", "TDDE25 Redovisning",
                 "write_field", "DESCRIPTION", "Featuring Erik Avedal Holmsten",
                 "/multiple"
             ]
@@ -28,10 +103,25 @@
 
         {
             "pattern": [
-                "has_text", "TDDE24\\, Undervisningstyp: PROGR\\, D1\\, U1", "SUMMARY"
+                "and",
+                "has_text", "TDDD72", "SUMMARY",
+                "has_text", "Undervisningstyp: FÖ", "SUMMARY",
+                "/and"
             ],
             "action": [
-                "remove_event"
+                "write_field", "SUMMARY", "TDDD72 Föreläsning"
+            ]
+        },
+        {
+            "pattern": [
+                "and",
+                "has_text", "TDDD72", "SUMMARY",
+                "has_text", "Undervisningstyp: FÖ", "SUMMARY",
+                "has_text", "Lärare: Johannes Klaus Fichte", "DESCRIPTION",
+                "/and"
+            ],
+            "action": [
+                "write_field", "DESCRIPTION", "Johannes Klaus Fichte"
             ]
         }
     ]

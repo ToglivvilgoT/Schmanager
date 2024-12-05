@@ -151,7 +151,10 @@ class OutputWeek:
         """ returns a dict with the day as key and all events taking place that day as the value """
         sorted_events = {time.day: [] for time in self.week_range}
         for event in self.calendar.events:
-            sorted_events[event.get_start_time().day].append(event)
+            try:
+                sorted_events[event.get_start_time().day].append(event)
+            except KeyError:
+                pass
 
         return sorted_events            
 

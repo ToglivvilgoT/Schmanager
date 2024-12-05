@@ -16,7 +16,7 @@ class InputJSON():
         file_path should be a path to a json file
         raises ValueError if file cant be opened or cant be parsed """
         try:
-            with open(file_path, 'r') as file:
+            with open(file_path, 'r', encoding='utf-8') as file:
                 return json.load(file)
         except:
             raise ValueError(f'invalid file_name "{file_path}", wasnt able to read or parse')

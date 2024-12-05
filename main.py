@@ -3,18 +3,27 @@ import cal_raw
 import src_cal
 import input_json
 import output_week
+import kivy
+from kivy.app import App
+
+
+class WeekApp(App):
+    pass
 
 
 if __name__ == '__main__':
     unbuilt_school_calendar = input_json.InputJSON().get_unbuilt_cal('input_24HT2.json')
-    unbuild_private_calendar = input_json.InputJSON().get_unbuilt_cal('input_private_calendar.json')
     school_calendar = unbuilt_school_calendar.build()
-    private_calendar = unbuild_private_calendar.build()
     src_school_calendar = src_cal.SrcCalCalendar(school_calendar)
-    src_private_calendar = src_cal.SrcCalCalendar(private_calendar)
 
-    unbuilt_calendar = cal_raw.UnbuiltCal((src_school_calendar, src_private_calendar), [])
-    calendar = unbuilt_calendar.build()
+    try:
+        unbuild_private_calendar = input_json.InputJSON().get_unbuilt_cal('input_private_calendar.json')
+        private_calendar = unbuild_private_calendar.build()
+        src_private_calendar = src_cal.SrcCalCalendar(private_calendar)
+        unbuilt_calendar = cal_raw.UnbuiltCal((src_school_calendar, src_private_calendar), [])
+        calendar = unbuilt_calendar.build()
+    except:
+        calendar = school_calendar
 
     output_week.OutputWeek(
         [
@@ -29,3 +38,5 @@ if __name__ == '__main__':
         calendar,
         'output_week.html'     
     ).write_to_file()
+
+    WeekApp().run()

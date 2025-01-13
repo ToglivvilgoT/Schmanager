@@ -1,9 +1,15 @@
-from typing import Iterable, Sequence
+"""Module with three main classes:
+Time class for representing time.
+Event class for representing a calendar event.
+Calendar class for representing a calendar.
+"""
+from typing import Iterable
 from functools import total_ordering
 
 
 @total_ordering
 class Time:
+    """Class for representing time."""
     def __init__(self, year: int, month: int, day: int, hour: int, minute: int):
         self.year = year
         self.month = month
@@ -11,119 +17,128 @@ class Time:
         self.hour = hour
         self.minute = minute
 
-    def __eq__(self, other: 'Time'):
-        if isinstance(other, Time):
-            return self.year == other.year and \
-                self.month == other.month and \
-                self.day == other.day and \
-                self.hour == other.hour and \
-                self.minute == other.minute
+    def as_tuple(self) -> tuple[int, int, int, int, int]:
+        """Return time as a tuple: (year, month, day, hour, minute)."""
+        return (self.year, self.month, self.day, self.hour, self.minute)
 
-    def __lt__(self, other: 'Time'):
-        def helper_comp(first: Sequence[int], second: Sequence[int]):
-            if not first:
-                return False
-            else:
-                return first[0] < second[0] or first[0] == second[0] and helper_comp(first[1:], second[1:])
-
+    def __eq__(self, other: 'Time') -> bool:
+        """Check if two Times are equal.
+        If other is not of type Time, raise ValueError.
+        """
         if isinstance(other, Time):
-            return helper_comp([self.year, self.month, self.day, self.hour, self.minute],
-                [other.year, other.month, other.day, other.hour, other.minute])
-        
+            return self.as_tuple() == other.as_tuple()
         else:
-            raise ValueError(f"can only compare arguments of type Time, not Time and {type(other)}")
+            raise ValueError(f'can only compare arguments of type Time, not Time and {type(other)}')
 
-    def str2time(time_str: str):
-        """ returns a Time object given a time_str in format: yyyyMMddThhmmssZ where 'T' and 'Z' are string Literals
-        raises ValueError if time_str can not be decoded """
+    def __lt__(self, other: 'Time') -> bool:
+        """Check if self comes before other.
+        If other is not of type time, raise ValueError.
+        """
+        if isinstance(other, Time):
+            return self.as_tuple() < other.as_tuple()
+        else:
+            raise ValueError(f'can only compare arguments of type Time, not Time and {type(other)}')
 
+    def str2time(time_str: str) -> 'Time':
+        """Returns a Time object given a time_str in format: yyyyMMddThhmmssZ where 'T' and 'Z' are string Literals
+        raises ValueError if time_str can not be decoded.
+        """
         try:
             year = int(time_str[0:4])
             month = int(time_str[4:6])
             day = int(time_str[6:8])
+            assert time_str[8] == 'T'
             hour = int(time_str[9:11])
             minute = int(time_str[11:13])
+            int(time_str[14:15])
+            assert time_str[15] == 'Z'
         except:
             raise ValueError('time_str could not be interpreted, should be in format yyyyMMddThhmmssZ where "T" and "Z" are string Literals')
-        
+
         return Time(year, month, day, hour, minute)
+
+    def __str__(self, tabs: int=0) -> str:
+        return '\t' * tabs + f'Time: {self.year:04}/{self.month:02}/{self.day:02} {self.hour:02}:{self.minute:02}'
 
 
 class Event:
-    """ Class for Calendar Events """
+    """Class for Calendar Events."""
     def __init__(self, content: dict[str, str]):
-        """ content keys should be fields and content values is the text of that field """
+        """Content keys should be fields and content values is the text of that field."""
         self.content = content
 
-    def has_field(self, field_name: str):
-        """ Returns True if Event has the field 'field_name' else False """
-        return field_name in self.content.keys()
+    def has_field(self, field_name: str) -> bool:
+        """Returns True if Event has the field 'field_name' else False."""
+        return field_name in self.content
 
-    def get_field_text(self, field_name: str):
-        """ Returns the content of field 'field_name'
-        raises KeyError if Event doesnt contain the field 'field_name' """
-
+    def get_field_text(self, field_name: str) -> str:
+        """Returns the content of field 'field_name'
+        raises KeyError if Event doesnt contain the field 'field_name'.
+        """
         try:
             return self.content[field_name]
         except KeyError:
             raise KeyError(f'Event does not have the field: {field_name}')
 
-    def get_start_time(self):
-        """ returns the start time of the Event
-        raises ValueError if Event doesnt have start_time """
-
+    def get_start_time(self) -> Time:
+        """Returns the start time of the Event.
+        Event must have a field called 'DTSTART' and its value must be in format yyyyMMddThhmmssZ where 'T' and 'Z' are string literals.
+        raises ValueError if Event doesnt have start_time or start_time is in the wrong format.
+        """
         try:
-            return Time.str2time(self.content['DTSTART'])
+            return Time.str2time(self.get_field_text('DTSTART'))
         except KeyError:
             raise ValueError('Event does not have a start time')
         except ValueError:
             raise ValueError('Event does not have a start time in correct format, should be in format yyyyMMddThhmmssZ')
 
-    def get_end_time(self):
-        """ retuns the end time of the Event
-        raises ValueError if Event doesnt have end time """
-
+    def get_end_time(self) -> Time:
+        """Retuns the end time of the Event
+        Event must have a field called 'DTEND' and its value must be in format yyyyMMddThhmmssZ where 'T' and 'Z' are string literals.
+        raises ValueError if Event doesnt have end time or if it is in the wrong format.
+        """
         try:
-            return Time.str2time(self.content['DTEND'])
+            return Time.str2time(self.get_field_text('DTEND'))
         except KeyError:
             raise ValueError('Event does not have an end time')
         except ValueError:
             raise ValueError('Event does not have a start time in correct format, should be in format yyyyMMddThhmmssZ')
 
-    def get_fields(self):
-        """ returns all fields of the event """
+    def get_fields(self) -> Iterable[str]:
+        """Returns all fields of the event."""
         return self.content.keys()
     
-    def remove_field(self, field: str):
-        """ removes field from event, if field doesnt exist, nothing happens """
+    def remove_field(self, field: str) -> None:
+        """Removes field from event, if field doesnt exist, nothing happens."""
         try:
             del self.content[field]
         except KeyError:
             pass
 
-    def write_field(self, field: str, text: str, overwrite: bool = True):
-        """ writes text to field
+    def write_field(self, field: str, text: str, overwrite: bool = True) -> None:
+        """Writes text to field
         if event doesnt have field, field is added
         if event has field and overwrite = True, the previous text is discarded
-        if event has field and overwrite is False, nothing happens """
+        if event has field and overwrite is False, nothing happens.
+        """
         if overwrite or not self.has_field(field):
             self.content[field] = text
 
-    def __str__(self, tabs:int=0):
-        name = '\t' * tabs + 'Event:\n'
+    def __str__(self, tabs: int=0) -> str:
+        name = '\t' * tabs + 'Event:'
         for field, text in self.content.items():
-            name += '\t' * (tabs+1) + field + ': ' + text + '\n'
+            name += '\n' + '\t' * (tabs+1) + field + ': ' + text
         return name
 
 
 class Calendar:
-    """ Class for Calendars """
+    """Class for Calendars."""
     def __init__(self, events: Iterable[Event]):
-        """ Initializes Calendar Object """
-        self.events = [event for event in events]
+        """Initializes Calendar Object."""
+        self.events = list(events)
 
-    def __str__(self, tabs:int=0):
-        name = '\t' * tabs + 'Calendar:\n'
+    def __str__(self, tabs: int=0) -> str:
+        name = '\t' * tabs + 'Calendar:'
         for event in self.events:
-            name += event.__str__(tabs=1)
+            name += '\n' + event.__str__(tabs=tabs + 1)
         return name

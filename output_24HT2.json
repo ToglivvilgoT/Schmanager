@@ -1,0 +1,191 @@
+{
+    "src_cals": [
+        "url",
+        "https://cloud.timeedit.net/liu/web/schema/ri647QQQY80Zn1Q5368009Z8y6Z56.ics",
+        "/url"
+    ],
+    "filters": [
+        {
+            "pattern": [
+                "and",
+                "has_text",
+                "TDDE24\\, Undervisningstyp: SE",
+                "SUMMARY",
+                "not",
+                "has_text",
+                "Grupp S1",
+                "SUMMARY",
+                "/not",
+                "/and"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text",
+                "TDDE24\\, Undervisningstyp: SE",
+                "SUMMARY"
+            ],
+            "action": [
+                "multiple",
+                "write_field",
+                "SUMMARY",
+                "TDDE24 Seminarium",
+                "write_field",
+                "DESCRIPTION",
+                "Featuring MORGAN!",
+                "/multiple"
+            ]
+        },
+        {
+            "pattern": [
+                "and",
+                "has_text",
+                "TDDE24\\, Undervisningstyp: LA",
+                "SUMMARY",
+                "not",
+                "has_text",
+                "Grupp 63",
+                "SUMMARY",
+                "/not",
+                "/and"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text",
+                "TDDE24\\, Undervisningstyp: LA",
+                "SUMMARY"
+            ],
+            "action": [
+                "multiple",
+                "write_field",
+                "SUMMARY",
+                "TDDE24 Labb",
+                "write_field",
+                "DESCRIPTION",
+                "Featuring ALICE!",
+                "/multiple"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text",
+                "TDDE24\\, Undervisningstyp: PROGR\\, D1\\, U1",
+                "SUMMARY"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "and",
+                "has_text",
+                "TDDE25\\, Undervisningstyp: LA",
+                "SUMMARY",
+                "not",
+                "has_text",
+                "Storgrupp 4",
+                "SUMMARY",
+                "/not",
+                "/and"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text",
+                "TDDE25\\, Undervisningstyp: LA",
+                "SUMMARY"
+            ],
+            "action": [
+                "multiple",
+                "write_field",
+                "SUMMARY",
+                "TDDE25 Labb",
+                "write_field",
+                "DESCRIPTION",
+                "Featuring Erik Avedal Holmsten",
+                "/multiple"
+            ]
+        },
+        {
+            "pattern": [
+                "and",
+                "has_text",
+                "TDDE25\\, Undervisningstyp: RE",
+                "SUMMARY",
+                "not",
+                "has_text",
+                "Storgrupp 4",
+                "/not",
+                "/and"
+            ],
+            "action": [
+                "remove_event"
+            ]
+        },
+        {
+            "pattern": [
+                "has_text",
+                "TDDE25\\, Undervisningstyp: RE",
+                "SUMMARY"
+            ],
+            "action": [
+                "multiple",
+                "write_field",
+                "SUMMARY",
+                "TDDE25 Redovisning",
+                "write_field",
+                "DESCRIPTION",
+                "Featuring Erik Avedal Holmsten",
+                "/multiple"
+            ]
+        },
+        {
+            "pattern": [
+                "and",
+                "has_text",
+                "TDDD72",
+                "SUMMARY",
+                "has_text",
+                "Undervisningstyp: F\u00d6",
+                "SUMMARY",
+                "/and"
+            ],
+            "action": [
+                "write_field",
+                "SUMMARY",
+                "TDDD72 F\u00f6rel\u00e4sning"
+            ]
+        },
+        {
+            "pattern": [
+                "and",
+                "has_text",
+                "TDDD72",
+                "SUMMARY",
+                "has_text",
+                "Undervisningstyp: F\u00d6",
+                "SUMMARY",
+                "has_text",
+                "L\u00e4rare: Johannes Klaus Fichte",
+                "DESCRIPTION",
+                "/and"
+            ],
+            "action": [
+                "write_field",
+                "DESCRIPTION",
+                "Johannes Klaus Fichte"
+            ]
+        }
+    ]
+}

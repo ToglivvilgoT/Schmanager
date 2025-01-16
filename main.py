@@ -3,12 +3,7 @@ import cal_raw
 import src_cal
 import input_json
 import output_week
-import kivy
-from kivy.app import App
-
-
-class WeekApp(App):
-    pass
+from kivy_main_menu import MainMenuApp
 
 
 if __name__ == '__main__':
@@ -39,4 +34,4 @@ if __name__ == '__main__':
         'output_week.html'     
     ).write_to_file()
 
-    WeekApp().run()
+    MainMenuApp().run()

@@ -6,8 +6,8 @@
         {
             "pattern": [
                 "and",
-                "has_text", "TDDE24\\, Undervisningstyp: SE", "SUMMARY",
-                "not", "has_text", "Grupp S1", "SUMMARY", "/not",
+                "has_text", "TDDE24\\, Undervisningstyp: SE", "SUMMARY", "/has_text",
+                "not", "has_text", "Grupp S1", "SUMMARY", "/has_text", "/not",
                 "/and"
             ],
             "action": [
@@ -16,7 +16,7 @@
         },
         {
             "pattern": [
-                "has_text", "TDDE24\\, Undervisningstyp: SE", "SUMMARY"
+                "has_text", "TDDE24\\, Undervisningstyp: SE", "SUMMARY", "/has_text"
             ],
             "action": [
                 "multiple",
@@ -28,8 +28,8 @@
         {
             "pattern": [
                 "and",
-                "has_text", "TDDE24\\, Undervisningstyp: LA", "SUMMARY",
-                "not", "has_text", "Grupp 63", "SUMMARY", "/not",
+                "has_text", "TDDE24\\, Undervisningstyp: LA", "SUMMARY", "/has_text",
+                "not", "has_text", "Grupp 63", "SUMMARY", "/has_text", "/not",
                 "/and"
             ],
             "action": [
@@ -38,7 +38,7 @@
         },
         {
             "pattern": [
-                "has_text", "TDDE24\\, Undervisningstyp: LA", "SUMMARY"
+                "has_text", "TDDE24\\, Undervisningstyp: LA", "SUMMARY", "/has_text"
             ],
             "action": [
                 "multiple",
@@ -49,7 +49,7 @@
         },
         {
             "pattern": [
-                "has_text", "TDDE24\\, Undervisningstyp: PROGR\\, D1\\, U1", "SUMMARY"
+                "has_text", "TDDE24\\, Undervisningstyp: PROGR\\, D1\\, U1", "SUMMARY", "/has_text"
             ],
             "action": [
                 "remove_event"
@@ -59,8 +59,8 @@
         {
             "pattern": [
                 "and",
-                "has_text", "TDDE25\\, Undervisningstyp: LA", "SUMMARY",
-                "not", "has_text", "Storgrupp 4", "SUMMARY", "/not",
+                "has_text", "TDDE25\\, Undervisningstyp: LA", "SUMMARY", "/has_text",
+                "not", "has_text", "Storgrupp 4", "SUMMARY", "/has_text", "/not",
                 "/and"
             ],
             "action": [
@@ -69,7 +69,7 @@
         },
         {
             "pattern": [
-                "has_text", "TDDE25\\, Undervisningstyp: LA", "SUMMARY"
+                "has_text", "TDDE25\\, Undervisningstyp: LA", "SUMMARY", "/has_text"
             ],
             "action": [
                 "multiple",
@@ -81,8 +81,8 @@
         {
             "pattern": [
                 "and",
-                "has_text", "TDDE25\\, Undervisningstyp: RE", "SUMMARY",
-                "not", "has_text", "Storgrupp 4", "SUMMARY",
+                "has_text", "TDDE25\\, Undervisningstyp: RE", "SUMMARY", "/has_text",
+                "not", "has_text", "Storgrupp 4", "/has_text", "SUMMARY",
                 "/and"
             ],
             "action": [
@@ -91,7 +91,7 @@
         },
         {
             "pattern": [
-                "has_text", "TDDE25\\, Undervisningstyp: RE", "SUMMARY"
+                "has_text", "TDDE25\\, Undervisningstyp: RE", "SUMMARY", "/has_text"
             ],
             "action": [
                 "multiple",
@@ -104,8 +104,8 @@
         {
             "pattern": [
                 "and",
-                "has_text", "TDDD72", "SUMMARY",
-                "has_text", "Undervisningstyp: FÖ", "SUMMARY",
+                "has_text", "TDDD72", "SUMMARY", "/has_text",
+                "has_text", "Undervisningstyp: FÖ", "SUMMARY", "/has_text",
                 "/and"
             ],
             "action": [
@@ -115,9 +115,9 @@
         {
             "pattern": [
                 "and",
-                "has_text", "TDDD72", "SUMMARY",
-                "has_text", "Undervisningstyp: FÖ", "SUMMARY",
-                "has_text", "Lärare: Johannes Klaus Fichte", "DESCRIPTION",
+                "has_text", "TDDD72", "SUMMARY", "/has_text",
+                "has_text", "Undervisningstyp: FÖ", "SUMMARY", "/has_text",
+                "has_text", "Lärare: Johannes Klaus Fichte", "DESCRIPTION", "/has_text",
                 "/and"
             ],
             "action": [

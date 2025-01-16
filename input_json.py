@@ -39,6 +39,19 @@ class InputJSON():
     @staticmethod
     def _parse_pattern(pat: list[str]) -> pattern.Pattern:
         """ parses a pattern list of strings and returns the parsed pattern """
+        def parse_strings(patrn: list[str], index: int) -> tuple[list[str], int]:
+            """Returns all strings from patern at index until next '/' prefixed keyword appears.
+            Also returns the index dirrectly after the '/' prefixed keyword.
+            """
+            words = []
+            while index < len(patrn):
+                if patrn[index][0] == '/':
+                    return words, index + 1
+                else:
+                    words.append(patrn[index])
+                    index += 1
+            raise ValueError('No "/" prefixed keyword was found in patrn')
+
         def parse_recursive(patrn: list[str], index: int) -> tuple[Iterable[pattern.Pattern], int]:
             """ parses all patterns from index until end of patrn or
             until '/' indexed keyword without beginning keyword is found 
@@ -62,8 +75,11 @@ class InputJSON():
                         index += 1
 
                     case 'has_text':
-                        patrns.append(pattern.PatternHasText(*patrn[index+1:index+3]))
-                        index += 3
+                        text = patrn[index + 1]
+                        fields, index = parse_strings(patrn, index + 2)
+                        if fields == []:
+                            fields = None
+                        patrns.append(pattern.PatternHasText(text, fields))
 
                     case 'in_time':
                         patrns.append(pattern.PatternInTime(
@@ -135,4 +151,4 @@ class InputJSON():
 if __name__ == '__main__':
     unbuilt_cal = InputJSON().get_unbuilt_cal('input_24HT2.json')
     print(unbuilt_cal)
-    print(unbuilt_cal.build())
+    #print(unbuilt_cal.build())

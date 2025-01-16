@@ -39,6 +39,7 @@ class Time:
         else:
             raise ValueError(f'can only compare arguments of type Time, not Time and {type(other)}')
 
+    @staticmethod
     def str2time(time_str: str) -> 'Time':
         """Returns a Time object given a time_str in format: yyyyMMddThhmmssZ where 'T' and 'Z' are string Literals
         raises ValueError if time_str can not be decoded.
@@ -56,6 +57,10 @@ class Time:
             raise ValueError('time_str could not be interpreted, should be in format yyyyMMddThhmmssZ where "T" and "Z" are string Literals')
 
         return Time(year, month, day, hour, minute)
+
+    def as_str(self) -> str:
+        """returns time as a stirng on format yyyyMMddThhmmssZ where 'T' and 'Z' are string literals."""
+        return f'{self.year:04}{self.month:02}{self.day:02}T{self.hour:02}{self.minute:02}00Z'
 
     def __str__(self, tabs: int=0) -> str:
         return '\t' * tabs + f'Time: {self.year:04}/{self.month:02}/{self.day:02} {self.hour:02}:{self.minute:02}'
